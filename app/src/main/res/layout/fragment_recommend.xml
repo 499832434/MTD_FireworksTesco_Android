@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:id="@+id/Rl"
+        >
+
+    <com.aspsine.swipetoloadlayout.SwipeToLoadLayout
+            android:id="@+id/swipeToLoadLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        <include
+                android:id="@id/swipe_refresh_header"
+                layout="@layout/layout_recommend_header"/>
+
+        <com.chem99.fireworkstesco.view.MyScrollView
+                android:id="@id/swipe_target"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <LinearLayout
+                        android:id="@+id/group"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                    <TextView android:layout_width="match_parent"
+                              android:layout_height="50dp"
+                              android:gravity="center"
+                              android:id="@+id/tv1"
+                              android:text="ssssss"
+                              android:background="#ccc111"/>
+                    <TextView android:layout_width="match_parent"
+                              android:layout_height="50dp"
+                              android:gravity="center"
+                              android:id="@+id/tv3"
+                              android:text="搜索"
+                              android:background="#FF4081"/>
+
+                    <ImageView
+                            android:id="@+id/ivOne"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="8dp"
+                            android:src="@drawable/wm_common_img_loading_list1"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:scaleType="centerCrop"/>
+
+                    <ImageView
+                            android:id="@+id/ivTwo"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="8dp"
+                            android:src="@drawable/wm_common_img_loading_list2"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:scaleType="centerCrop"/>
+
+                    <ImageView
+                            android:id="@+id/ivThree"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="8dp"
+                            android:src="@drawable/wm_common_img_loading_list3"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:scaleType="centerCrop"/>
+
+                    <ImageView
+                            android:id="@+id/ivFour"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:src="@drawable/wm_common_img_loading_list4"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:scaleType="centerCrop"/>
+
+                    <ImageView
+                            android:id="@+id/ivFive"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:src="@drawable/wm_common_img_loading_list5"
+                            android:layout_margin="8dp"
+                            android:scaleType="centerCrop"/>
+                    <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:src="@drawable/wm_common_img_loading_list5"
+                            android:layout_margin="8dp"
+                            android:scaleType="centerCrop"/>
+                    <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:src="@drawable/wm_common_img_loading_list5"
+                            android:layout_margin="8dp"
+                            android:scaleType="centerCrop"/>
+                    <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:src="@drawable/wm_common_img_loading_list5"
+                            android:layout_margin="8dp"
+                            android:scaleType="centerCrop"/>
+                    <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:src="@drawable/wm_common_img_loading_list5"
+                            android:layout_margin="8dp"
+                            android:scaleType="centerCrop"/>
+                    <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:src="@drawable/wm_common_img_loading_list5"
+                            android:layout_margin="8dp"
+                            android:scaleType="centerCrop"/>
+                    <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:src="@drawable/wm_common_img_loading_list5"
+                            android:layout_margin="8dp"
+                            android:scaleType="centerCrop"/>
+                </LinearLayout>
+                <TextView android:layout_width="match_parent"
+                          android:layout_height="50dp"
+                          android:gravity="center"
+                          android:text="我爱你"
+                          android:id="@+id/tv2"
+                          android:background="#ccc111"/>
+            </FrameLayout>
+
+        </com.chem99.fireworkstesco.view.MyScrollView>
+
+    </com.aspsine.swipetoloadlayout.SwipeToLoadLayout>
+
+</RelativeLayout>

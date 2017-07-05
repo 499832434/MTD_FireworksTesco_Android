@@ -1,16 +1,81 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                tools:context=".MainActivity">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:background="#ffffff">
 
-    <TextView
-            android:text="@string/hello_world"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+    <com.chem99.fireworkstesco.view.CustomViewPager
+            android:id="@+id/masterViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+    </com.chem99.fireworkstesco.view.CustomViewPager>
 
-</RelativeLayout>
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cccccc"/>
+
+    <RadioGroup
+            android:id="@+id/tabGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <RadioButton
+                android:id="@+id/recommendRB"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:background="@null"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:drawablePadding="4dp"
+                android:padding="8dp"
+                android:textSize="14sp"
+                android:drawableTop="@drawable/icon_home_select"
+                android:text="推荐"
+                android:textColor="@color/bottom_tab_text_selector"
+                android:checked="true"/>
+
+        <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="订单"
+                android:textColor="@color/bottom_tab_text_selector"
+                android:layout_weight="1"
+                android:button="@null"
+                android:background="@null"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:drawablePadding="4dp"
+                android:padding="8dp"
+                android:textSize="14sp"
+                android:drawableTop="@drawable/icon_home_select"
+                android:id="@+id/orderRB"
+                />
+
+
+
+        <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="账户"
+                android:textColor="@color/bottom_tab_text_selector"
+                android:layout_weight="1"
+                android:button="@null"
+                android:background="@null"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:drawablePadding="4dp"
+                android:padding="8dp"
+                android:textSize="14sp"
+                android:drawableTop="@drawable/icon_home_select"
+                android:id="@+id/accountRB"
+                />
+    </RadioGroup>
+
+</LinearLayout>
+
