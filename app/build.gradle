@@ -39,10 +39,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile(name: 'swipetoloadLayout', ext: 'aar')
+    compile files('libs/BaiduLBS_Android.jar')
+    compile 'com.android.support:design:23.0.1'
 }

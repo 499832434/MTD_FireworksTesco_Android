@@ -10,6 +10,7 @@ import android.util.SparseArray;
 import android.view.*;
 import com.chem99.fireworkstesco.R;
 import com.chem99.fireworkstesco.fragment.AccountFragment;
+import com.chem99.fireworkstesco.fragment.OrderFragment;
 import com.chem99.fireworkstesco.fragment.RecommendFragment;
 import com.chem99.fireworkstesco.view.CustomViewPager;
 
@@ -84,7 +85,7 @@ public class MainActivity extends BaseActivity {
             if (position == 0) {
                 return new RecommendFragment();
             } else if (position == 1) {
-                return new AccountFragment();
+                return new OrderFragment();
             } else if (position == 2) {
                 return new AccountFragment();
             }

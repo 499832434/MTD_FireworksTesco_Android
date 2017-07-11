@@ -1,6 +1,7 @@
 package com.chem99.fireworkstesco.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,11 +11,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.aspsine.swipetoloadlayout.OnRefreshListener;
 import com.aspsine.swipetoloadlayout.SwipeToLoadLayout;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.Poi;
+import com.chem99.fireworkstesco.InitApp;
 import com.chem99.fireworkstesco.R;
+import com.chem99.fireworkstesco.activity.MainActivity;
+import com.chem99.fireworkstesco.service.LocationService;
 import com.chem99.fireworkstesco.utils.DensityUtil;
+import com.chem99.fireworkstesco.view.ClearEditText;
 import com.chem99.fireworkstesco.view.MyScrollView;
 
 import java.lang.reflect.Field;
@@ -22,29 +33,44 @@ import java.lang.reflect.Field;
 /**
  * Created by zongshuo on 2017/7/5.
  */
-public class RecommendFragment extends Fragment implements OnRefreshListener,MyScrollView.OnScrollListener{
+public class RecommendFragment extends Fragment implements OnRefreshListener,MyScrollView.OnScrollListener {
     private View currentView = null;
     private SwipeToLoadLayout swipeToLoadLayout;
     private MyScrollView scrollView;
-    private TextView tv1,tv2,tv3;
-    private int topHeight,tv2Height;
+    private TextView  tv2;
+    private int topHeight, tv2Height;
+    private ClearEditText searchET;
+    private LocationService locationService;
+    private RelativeLayout RL1,RL2;
+    private ImageView searchIV;
+    private MainActivity mActivity;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         currentView = inflater.inflate(R.layout.fragment_recommend, container, false);
         initView();
+        getPositon();
         return currentView;
     }
 
-    private void initView(){
-        topHeight=getStatusBarHeight();
+    private void initView() {
+        topHeight = getStatusBarHeight();
 
-        tv1= (TextView) currentView.findViewById(R.id.tv1);
-        tv2= (TextView) currentView.findViewById(R.id.tv2);
-        tv3= (TextView) currentView.findViewById(R.id.tv3);
-        tv2Height= DensityUtil.dip2px(getActivity(), 50);
+        searchET = (ClearEditText) currentView.findViewById(R.id.searchET);
+        tv2 = (TextView) currentView.findViewById(R.id.tv2);
+        tv2.setOnClickListener(new View.OnClickListener() {
 
-        Log.e("", topHeight + "===" + getTv2Height() + "====" + tv2Height);
+            @Override
+            public void onClick(View v) {
+                getPositon();// 定位SDK
+            }
+        });
+        RL1= (RelativeLayout) currentView.findViewById(R.id.RL1);
+        RL2= (RelativeLayout) currentView.findViewById(R.id.RL2);
+        tv2Height = DensityUtil.dip2px(getActivity(), 50);
+        searchIV= (ImageView) currentView.findViewById(R.id.searchIV);
+
         scrollView = (MyScrollView) currentView.findViewById(R.id.swipe_target);
         swipeToLoadLayout = (SwipeToLoadLayout) currentView.findViewById(R.id.swipeToLoadLayout);
 
@@ -58,7 +84,6 @@ public class RecommendFragment extends Fragment implements OnRefreshListener,MyS
             public void onGlobalLayout() {
                 //这一步很重要，使得上面的购买布局和下面的购买布局重合
                 onScroll(scrollView.getScrollY());
-                Log.e("eee", String.valueOf(scrollView.getScrollY()));
             }
         });
         scrollView.getViewTreeObserver().addOnScrollChangedListener(mOnScrollChangedListener);
@@ -70,7 +95,8 @@ public class RecommendFragment extends Fragment implements OnRefreshListener,MyS
                 swipeToLoadLayout.setRefreshing(true);
             }
         }, 100);
-        
+
+
     }
 
     ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener = new ViewTreeObserver.OnScrollChangedListener() {
@@ -95,51 +121,27 @@ public class RecommendFragment extends Fragment implements OnRefreshListener,MyS
 
     @Override
     public void onScroll(int scrollY) {
-        int v12ParentTop = Math.max(scrollY, tv1.getTop());
-        tv2.layout(0, v12ParentTop, tv2.getWidth(), v12ParentTop + tv2.getHeight());
+        int v12ParentTop = Math.max(scrollY, RL1.getTop());
+        RL2.layout(0, v12ParentTop, RL2.getWidth(), v12ParentTop + RL2.getHeight());
         getss();
     }
 
-    private void getss(){
-//        int width,height;
-//        Point p=new Point();
-//        getWindowManager().getDefaultDisplay().getSize(p);
-//        width=p.x;
-//        height=p.y;
-//
-//        Rect rect=new Rect(0,500,width,height);
-//
-//        if(tv3.getLocalVisibleRect(rect)){
-//            System.out.println("控件在屏幕显示范围内");
-//            tv2.setText("111");
-//        }else{
-//            System.out.println("控件已滑出屏幕…………");
-//            tv2.setText("222");
-//        }
+    private void getss() {
 
         int[] location = new int[2];
-        tv3.getLocationOnScreen(location);
+        currentView.findViewById(R.id.searchLL).getLocationOnScreen(location);
         int x = location[0];
         int y = location[1];
-        Log.e("zzzz",x+"===="+y);
 
-        if(y<topHeight){
-            tv2.setText("222");
-        }else{
-            tv2.setText("111");
+        if (y < topHeight) {
+            searchIV.setVisibility(View.VISIBLE);
+        } else {
+            searchIV.setVisibility(View.GONE);
         }
 
-
-//        Rect scrollBounds = new Rect();
-//        scrollView.getHitRect(scrollBounds);
-//        if (tv3.getLocalVisibleRect(scrollBounds)) {
-//            tv2.setText("111");
-//        }else{
-//            tv2.setText("222");
-//        }
     }
 
-    public  int getStatusBarHeight(){
+    public int getStatusBarHeight() {
         Class<?> c = null;
         Object obj = null;
         Field field = null;
@@ -156,13 +158,99 @@ public class RecommendFragment extends Fragment implements OnRefreshListener,MyS
         return statusBarHeight;
     }
 
-    private int getTv2Height(){
-        int w = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
-        int h = View.MeasureSpec.makeMeasureSpec(0,View.MeasureSpec.UNSPECIFIED);
-        tv2.measure(w, h);
-        int height =tv2.getMeasuredHeight();
-        int width =tv2.getMeasuredWidth();
-        return height;
 
+
+    /*****
+     *
+     * 定位结果回调，重写onReceiveLocation方法，可以直接拷贝如下代码到自己工程中修改
+     *
+     */
+    private BDLocationListener mListener = new BDLocationListener() {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            // TODO Auto-generated method stub
+            if (null != location && location.getLocType() != BDLocation.TypeServerError) {
+                if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
+                    Toast.makeText(getActivity(),"gps定位成功",Toast.LENGTH_SHORT).show();
+                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
+                    Toast.makeText(getActivity(),"网络定位成功",Toast.LENGTH_SHORT).show();
+                } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
+                    Toast.makeText(getActivity(),"离线定位成功，离线定位结果也是有效的",Toast.LENGTH_SHORT).show();
+                } else if (location.getLocType() == BDLocation.TypeServerError) {
+                    Toast.makeText(getActivity(),"服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因",Toast.LENGTH_SHORT).show();
+                } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
+                    Toast.makeText(getActivity(),"网络不同导致定位失败，请检查网络是否通畅",Toast.LENGTH_SHORT).show();
+                } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
+                    Toast.makeText(getActivity(),"无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机",Toast.LENGTH_SHORT).show();
+                }
+                logMsg(location.getAddrStr());
+            }
+        }
+
+        public void onConnectHotSpotMessage(String s, int i){
+        }
+    };
+
+
+    /**
+     * 显示请求字符串
+     *
+     * @param str
+     */
+    public void logMsg(String str) {
+        final String s = str;
+        try {
+            if (tv2 != null){
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv2.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                tv2.setText(s);
+                            }
+                        });
+
+                    }
+                }).start();
+            }
+            //LocationResult.setText(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /***
+     * Stop location service
+     */
+    @Override
+    public void onStop() {
+        // TODO Auto-generated method stub
+        locationService.unregisterListener(mListener); //注销掉监听
+        locationService.stop(); //停止定位服务
+        super.onStop();
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.mActivity=(MainActivity)context;
+    }
+
+    private void getPositon(){
+        // -----------location config ------------
+        locationService = InitApp.initApp.locationService;
+        //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考其他示例的activity，都是通过此种方式获取locationservice实例的
+        locationService.registerListener(mListener);
+        //注册监听
+        int type = getActivity().getIntent().getIntExtra("from", 0);
+        if (type == 0) {
+            locationService.setLocationOption(locationService.getDefaultLocationClientOption());
+        } else if (type == 1) {
+            locationService.setLocationOption(locationService.getOption());
+        }
+        locationService.start();// 定位SDK
     }
 }
